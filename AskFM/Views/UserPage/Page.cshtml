@@ -1,0 +1,39 @@
+﻿@model AskFM.ViewModels.UserPageDTO
+
+@{
+    ViewData["Title"] = "Page";
+}
+
+<h2>@Model.User.Name</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Кнопка</title>
+    <style>
+        .btn {
+            display: inline-block; /* Строчно-блочный элемент */
+            background: #8C959D; /* Серый цвет фона */
+            color: #fff; /* Белый цвет текста */
+            padding: 1rem 1.5rem; /* Поля вокруг текста */
+            text-decoration: none; /* Убираем подчёркивание */
+            border-radius: 3px; /* Скругляем уголки */
+        }
+    </style>
+</head>
+<body>
+    <a href="~/user-question/@Model.User.Id" class="btn">Переход по ссылке</a>
+</body>
+</html>
+<button method="get" action="~/user-question/@Model.User.Id" class="btn btn-link">ЗАДАТЬ ВОПРОС</button>
+
+@foreach (var genre in Model.Questions)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">@genre.Text</div>
+        <div class="panel-body"> @genre.Answer</div>
+    </div>
+}
+
+<h1>Page</h1>
+

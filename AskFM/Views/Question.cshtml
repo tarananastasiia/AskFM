@@ -1,0 +1,15 @@
+﻿@model AskFM.ViewModels.QuestionDto
+
+@{
+    ViewData["Title"] = "Question";
+}
+    <form method="post">
+        <p>
+            <label>Question</label><br />
+            <textarea name="_text"></textarea>
+        </p>
+        <p>
+            <input type="submit" value="Отправить" />
+        </p>
+    </form>
+
