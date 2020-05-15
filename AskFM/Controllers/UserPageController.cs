@@ -42,7 +42,7 @@ namespace AskFM.Controllers
 
             var models = _context.Questions
                 .Include(x => x.AnswerUser)
-                .Where(x => x.AnswerUserId == id).ToList();
+                .Where(x => x.AnswerUserId == id && x.Answer != null).ToList();
 
             var user = _context.Users.Find(id);
 
@@ -59,10 +59,6 @@ namespace AskFM.Controllers
 
             return View("Page", dto);
         }
-        //[HttpGet ("{id}/{questionid}")]
-        //public IActionResult Index (string questionid)
-        //{
 
-        //}
     }
 }

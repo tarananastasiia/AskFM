@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewData["Title"] = "UnansweredQuestions";
+}
+
+<h1>Ждут ответа</h1>
+<form method="post">
+    @foreach (var genre in Model.Questions)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">@genre.Text</div>
+        </div>
+    }
+    </form>

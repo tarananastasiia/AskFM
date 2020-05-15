@@ -8,8 +8,8 @@ namespace AskFM.ViewModels
     public class QuestionDto
     {
         public int Id { get; set; }
-        public int? QuestionUserId { get; set; }
-        public int AnswerUserId { get; set; }
+        public string QuestionUserId { get; set; }
+        public string AnswerUserId { get; set; }
 
         public string AnswerUserName { get; set; }
         public string Text { get; set; }

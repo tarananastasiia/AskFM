@@ -1,9 +1,9 @@
-﻿@model AskFM.ViewModels.UserPageDTO
+﻿
+@model AskFM.ViewModels.UserPageDTO
 
 @{
     ViewData["Title"] = "Page";
 }
-
 <h2>@Model.User.Name</h2>
 <!DOCTYPE html>
 <html>
@@ -22,17 +22,17 @@
     </style>
 </head>
 <body>
-    <a href="~/user-question/@Model.User.Id" class="btn">Переход по ссылке</a>
+    <a href="~/user-question/@Model.User.Id" class="btn">ЗАДАТЬ ВОПРОС</a>
+    <a href="~/user-question/un-answeredquestions" class="btn">Мои вопросы</a>
 </body>
 </html>
-<button method="get" action="~/user-question/@Model.User.Id" class="btn btn-link">ЗАДАТЬ ВОПРОС</button>
 
 @foreach (var genre in Model.Questions)
 {
-    <div class="panel panel-default">
-        <div class="panel-heading">@genre.Text</div>
-        <div class="panel-body"> @genre.Answer</div>
-    </div>
+<div class="panel panel-default">
+    <div class="panel-heading">@genre.Text</div>
+    <div class="panel-body"> @genre.Answer</div>
+</div>
 }
 
 <h1>Page</h1>
