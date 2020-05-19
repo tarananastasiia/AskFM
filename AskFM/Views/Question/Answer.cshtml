@@ -1,0 +1,27 @@
+﻿@model AskFM.ViewModels.QuestionDto
+
+@{
+    ViewData["Title"] = "Answer";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Answer">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <div class="panel-heading">@Model.Text</div>
+                <input asp-for="Answer" class="form-control" />
+                <span asp-validation-for="Answer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+             @*   <a href="~/user-question/@Model.Id" class="btn">Отправить</a>*@
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

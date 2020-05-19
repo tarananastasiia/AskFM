@@ -1,14 +1,17 @@
-﻿
+﻿@model AskFM.ViewModels.UserPageDTO
 @{
     ViewData["Title"] = "UnansweredQuestions";
 }
 
 <h1>Ждут ответа</h1>
-<form method="post">
-    @foreach (var genre in Model.Questions)
+<form method="get">
+    @foreach (var question in Model.Questions)
     {
-        <div class="panel panel-default">
-            <div class="panel-heading">@genre.Text</div>
+        <div>
+            <div class="btn-group-vertical">
+                <div><a href="~/user-question/un-answeredquestions/@question.Id" class="navbar-brand">@question.Text</a></div>
+            </div>
         </div>
     }
-    </form>
+</form>
+
