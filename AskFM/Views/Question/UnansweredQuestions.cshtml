@@ -4,14 +4,11 @@
 }
 
 <h1>Ждут ответа</h1>
-<form method="get">
-    @foreach (var question in Model.Questions)
-    {
-        <div>
-            <div class="btn-group-vertical">
-                <div><a href="~/user-question/un-answeredquestions/@question.Id" class="navbar-brand">@question.Text</a></div>
-            </div>
-        </div>
-    }
+<form method="post">
+    <div>
+        <div class="btn-group-vertical">
+            <div>@await Html.PartialAsync("Answer")</div>
+        </div>  
+    </div>
 </form>
 

@@ -26,8 +26,8 @@ namespace AskFM.Controllers
         {
             return View();
         }
-        [HttpPost("{userId}")]
-        public IActionResult Get(QuestionDto questionDto)
+        [HttpPost]
+        public IActionResult Create(QuestionDto questionDto)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             _context.Questions.Add(new Question()
@@ -48,7 +48,7 @@ namespace AskFM.Controllers
             var dto = new UserPageDTO();
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var models = _context.Questions
-                .Where(x => x.AnswerUserId == userId && x.Text != null).ToList();
+                .Where(x => x.AnswerUserId == userId && x.Answer==null).ToList();
             dto.Questions = models.Select(x => new QuestionDto()
             {
                 QuestionUserId = x.QuestionUserId,
@@ -56,25 +56,27 @@ namespace AskFM.Controllers
                 AnswerUserId = x.AnswerUserId,
                 Id = x.Id
             }).ToList();
-            return View("UnansweredQuestions", dto);
+            return View("Answer", dto);
         }
-        [HttpGet("un-answeredquestions/{Id}")]
-        public IActionResult Answer(int id)
+        //[HttpGet("un-answeredquestions/{Id}")]
+        //public IActionResult Answer(int id)
+        //{
+        //    var model = _context.Questions
+        //        .First(x => x.Id == id);
+        //    var question = new QuestionDto()
+        //    {
+        //        QuestionUserId = model.QuestionUserId,
+        //        Text = model.Text,
+        //        AnswerUserId = model.AnswerUserId,
+        //        Id = id,
+        //    };
+        //    return View("Answer", question);
+        //}
+
+        [HttpPost("{Id}")]
+        public IActionResult Answer([FromForm]QuestionDto questionDto, int id)
         {
-            var model = _context.Questions
-                .First(x => x.Id == id);
-            var question = new QuestionDto()
-            {
-                QuestionUserId = model.QuestionUserId,
-                Text = model.Text,
-                AnswerUserId = model.AnswerUserId,
-                Id = id,
-            };
-            return View("Answer", question);
-        }
-        [HttpPost("un-answeredquestions/{Id}")]
-        public IActionResult Answer(QuestionDto questionDto, int id)
-        {
+            var files = HttpContext.Request.Form;
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var question = _context.Questions.First(x=>x.Id==id);
             question.Answer = questionDto.Answer;
