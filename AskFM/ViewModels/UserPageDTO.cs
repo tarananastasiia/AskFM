@@ -10,12 +10,15 @@ namespace AskFM.ViewModels
     {
         public List<QuestionDto> Questions { get; set; }
         public UserDto User { get; set; }
-
-       public UserPageDTO()
+        public int QuestionsCount { get; set;}
+        public int PageSize { get; set; }
+        public int PageNumber { get; set; }
+        public UserPageDTO()
         {
             User = new UserDto();
             Questions = new List<QuestionDto>();
+            QuestionsCount = new int();
+            PageNumber = new int();
         }
-
     }
 }

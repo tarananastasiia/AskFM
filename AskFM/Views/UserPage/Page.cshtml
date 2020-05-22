@@ -1,6 +1,4 @@
-﻿
-@model AskFM.ViewModels.UserPageDTO
-
+﻿@model AskFM.ViewModels.UserPageDTO
 @{
     ViewData["Title"] = "Page";
 }
@@ -22,18 +20,35 @@
     </style>
 </head>
 <body>
-    <a href="~/user-question/@Model.User.Id" class="btn">ЗАДАТЬ ВОПРОС</a>
+    <a href="~/user-question/?userId=@Model.User.Id" class="btn">ЗАДАТЬ ВОПРОС</a>
     <a href="~/user-question/un-answeredquestions" class="btn">Мои вопросы</a>
 </body>
 </html>
 
 @foreach (var genre in Model.Questions)
 {
-<div class="panel panel-default">
-    <div class="panel-heading">@genre.Text</div>
-    <div class="panel-body"> @genre.Answer</div>
-</div>
+    <div class="panel panel-default">
+        <div class="panel-heading">@genre.Text</div>
+        <div class="panel-body"> @genre.Answer</div>
+    </div>
 }
-
-<h1>Page</h1>
-
+@if (Model.PageNumber>1)
+{
+    <a asp-controller="user-page"
+       asp-action=@Model.User.Id
+       asp-route-pageNumber="@(Model.PageNumber - 1)"
+       class="btn btn-outline-dark">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+@if (Model.PageNumber < (double)Model.QuestionsCount/(double)Model.PageSize)
+{
+    <a asp-controller="user-page"
+       asp-action=@Model.User.Id
+       asp-route-pageNumber="@(Model.PageNumber + 1)"
+       class="btn btn-outline-dark">
+        Вперед
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}

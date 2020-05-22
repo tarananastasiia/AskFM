@@ -18,43 +18,34 @@ namespace AskFM.Controllers
         public UserPageController(ApplicationContext context)
         {
             _context = context;
-
-            //context.Questions.Add(new Question()
-            //{
-            //    Answer = "wefwef",
-            //    AnswerUserId = context.Users.First().Id,
-            //    IsAnonimized = false,
-            //    QuestionUserId = null,
-            //    Text = "kdfghekfhwekf hwefjkl hlkj???"
-
-            //});
-            //context.SaveChanges();
         }
 
         [HttpGet("{id}")]
-        public IActionResult Index(string id)
+        public IActionResult Index(string id, int pageNumber = 1)
         {
-            //    if (id == null)
-            //        id = _context.Users.First().Id;
+
             id = id ?? _context.Users.First().Id;
+            int pageSize = 3;
 
             var dto = new UserPageDTO();
-
+            dto.QuestionsCount = _context.Questions.Count(x => x.AnswerUserId == id && x.Answer != null);
             var models = _context.Questions
                 .Include(x => x.AnswerUser)
-                .Where(x => x.AnswerUserId == id && x.Answer != null).ToList();
+                .Where(x => x.AnswerUserId == id && x.Answer != null)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize).ToList();
 
             var user = _context.Users.Find(id);
 
             dto.User.Name = user.UserName;
-
+            dto.PageSize = pageSize;
             dto.User.Id = id;
+            dto.PageNumber = pageNumber;
             dto.Questions = models.Select(x => new QuestionDto()
             {
                 Answer = x.Answer,
                 Text = x.Text,
                 AnswerUserName = x.AnswerUser?.UserName
-
             }).ToList();
 
             return View("Page", dto);

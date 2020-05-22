@@ -21,9 +21,10 @@ namespace AskFM.Controllers
         {
             _context = context;
         }
-        [HttpGet("{userId}")]
-        public IActionResult Get(string userId)
+        [HttpGet]
+        public IActionResult Get()
         {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return View();
         }
         [HttpPost]
