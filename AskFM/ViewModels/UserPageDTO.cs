@@ -17,8 +17,6 @@ namespace AskFM.ViewModels
         {
             User = new UserDto();
             Questions = new List<QuestionDto>();
-            QuestionsCount = new int();
-            PageNumber = new int();
         }
     }
 }

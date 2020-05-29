@@ -13,15 +13,9 @@ namespace AskFM.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index(string userId)
+        public IActionResult Index()
         {
-            userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId != null)
-            {
-                return Redirect($"~/user-page/{userId}");
-            }
-            else
-            return View();
+                return Redirect($"~/question/page");
         }
     }
 }

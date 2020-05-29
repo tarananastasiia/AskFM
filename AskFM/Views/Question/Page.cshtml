@@ -1,0 +1,93 @@
+﻿@model AskFM.ViewModels.UserPageDTO
+@{
+    ViewData["Title"] = "Page";
+}
+
+<h2>@Model.User.Name</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Кнопка</title>
+    <style>
+        .btn {
+            display: inline-block; /* Строчно-блочный элемент */
+            background: #8C959D; /* Серый цвет фона */
+            color: #fff; /* Белый цвет текста */
+            padding: 1rem 1.5rem; /* Поля вокруг текста */
+            text-decoration: none; /* Убираем подчёркивание */
+            border-radius: 3px; /* Скругляем уголки */
+        }
+    </style>
+</head>
+<body>
+    <a href="~/question/?userId=@Model.User.Id" class="btn">ЗАДАТЬ ВОПРОС</a>
+    <a href="~/question/un-answeredquestions" class="btn">Мои вопросы</a>
+</body>
+</html>
+
+<div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        Dropdown
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <li>
+
+            <a asp-controller="question"
+               asp-action="page"
+               asp-route-userId="@Model.User.Id"
+               asp-route-pageNumber="@(Model.PageNumber)"
+               asp-route-pageSize="5">По 5</a>
+        </li>
+        <li>
+            <a asp-controller="question"
+               asp-action="page"
+               asp-route-userId="@Model.User.Id"
+               asp-route-pageNumber="@(Model.PageNumber)"
+               asp-route-pageSize="10">По 10</a>
+        </li>
+        <li>
+            <a asp-controller="question"
+               asp-action="page"
+               asp-route-userId="@Model.User.Id"
+               asp-route-pageNumber="@(Model.PageNumber)"
+               asp-route-pageSize="@Model.QuestionsCount">Все вопросы</a>
+        </li>
+    </ul>
+</div>
+
+@foreach (var question in Model.Questions)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">@question.Text</div>
+        <div class="panel-body"> @question.Answer</div>
+    </div>
+}
+
+@if (Model.PageNumber > 1)
+{
+    <a asp-controller="question"
+       asp-action="page"
+       asp-route-userId="@Model.User.Id"
+       asp-route-pageNumber="@(Model.PageNumber - 1)"
+       asp-route-pageSize="@Model.PageSize"
+       class="btn btn-outline-dark">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+
+@if (Model.PageNumber < (double)Model.QuestionsCount / Model.PageSize)
+{
+    <a asp-controller="question"
+       asp-action="page"
+       asp-route-userId="@Model.User.Id"
+       asp-route-pageNumber="@(Model.PageNumber + 1)"
+       asp-route-pageSize="@Model.PageSize"
+       class="btn btn-outline-dark">
+        Вперед
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}
+

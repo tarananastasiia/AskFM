@@ -15,5 +15,6 @@ namespace AskFM.Models
             Database.EnsureCreated();
         }
         public DbSet<Question> Questions { get; set; }
+        public DbSet<Comment> Coments { get; set; }
     }
 }
