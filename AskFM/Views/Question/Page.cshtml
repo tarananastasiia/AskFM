@@ -59,9 +59,38 @@
 
 @foreach (var question in Model.Questions)
 {
-    <div class="panel panel-default">
-        <div class="panel-heading">@question.Text</div>
-        <div class="panel-body"> @question.Answer</div>
+    <div class="row">
+        <div class="col-md-4">
+
+            <div class="panel-heading">@question.Text</div>
+            <div class="panel-heading">@question.Answer</div>
+            <h4>Коментарии</h4>
+            @foreach (var comment in question.Comments ?? new List<AskFM.ViewModels.CommentDto>())
+            {
+                <div class="panel-heading">@comment.Text</div>
+                @if (!String.IsNullOrEmpty(comment.UserId))
+                {
+                    <div class="panel-heading">@comment.UserName</div>
+                }
+            }
+            @for (int i = 1; i < 2; i++)
+            {
+                <form asp-controller="comment" asp-action="@question.Id" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <input name="Text" class="form-control" />
+                        <span class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label asp-for=@question.Comments.FirstOrDefault().IsAnonimized></label><br />
+                        <input asp-for=@question.Comments.FirstOrDefault().IsAnonimized />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Прокоментировать" class="btn btn-primary" />
+                    </div>
+                </form>
+            }
+        </div>
     </div>
 }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AskFM.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,10 +20,9 @@ namespace AskFM.Models
         public string AnswerUserId { get; set; }
 
         public User AnswerUser { get; set; }
-
         public string Text { get; set; }
         public string Answer { get; set; }
         public bool IsAnonimized { get; set; }
-        public ICollection<Comment> Comments { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

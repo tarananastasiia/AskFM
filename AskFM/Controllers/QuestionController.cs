@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using AskFM.Models;
 using AskFM.ViewModels;
@@ -25,7 +27,6 @@ namespace AskFM.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return View();
         }
         [HttpPost]
@@ -80,26 +81,34 @@ namespace AskFM.Controllers
                 userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             }
 
-
             var dto = new UserPageDTO();
             dto.QuestionsCount = _context.Questions.Count(x => x.AnswerUserId == userId && x.Answer != null);
             var models = _context.Questions
                 .Include(x => x.AnswerUser)
+                .Include(x => x.Comments)
                 .Where(x => x.AnswerUserId == userId && x.Answer != null)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize).ToList();
 
             var user = _context.Users.Find(userId);
 
-            //dto.User.Name = user.UserName;
+
             dto.PageSize = pageSize;
             dto.User.Id = userId;
             dto.PageNumber = pageNumber;
-            dto.Questions = models.Select(x => new QuestionDto()
+            dto.Questions = models.Select(question => new QuestionDto()
             {
-                Answer = x.Answer,
-                Text = x.Text,
-                AnswerUserName = x.AnswerUser?.UserName
+                Answer = question.Answer,
+                Text = question.Text,
+                AnswerUserName = question.AnswerUser?.UserName,
+                Id = question.Id,
+                Comments = question.Comments.Select(comment => new CommentDto()
+                {
+                    Text = comment.Text,
+                    IsAnonimized = comment.IsAnonimized,
+                    UserId=comment.IsAnonimized ? null : comment.UserId,
+                    UserName= comment.IsAnonimized ? null : comment.UserName
+                }).ToList()
             }).ToList();
             return View("Page", dto);
         }
