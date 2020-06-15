@@ -30,16 +30,19 @@ namespace AskFM.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(QuestionDto questionDto)
+        public IActionResult Create(QuestionDto questionDto, string userId)
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            }
             _context.Questions.Add(new Question()
             {
                 AnswerUserId = userId,
                 QuestionUserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
                 Text = questionDto.Text,
                 Answer = questionDto.Answer,
-
+                IsAnonimized=questionDto.IsAnonimized,
             });
             _context.SaveChanges();
             return LocalRedirect($"~/question/page");
@@ -57,7 +60,9 @@ namespace AskFM.Controllers
                 QuestionUserId = x.QuestionUserId,
                 Text = x.Text,
                 AnswerUserId = x.AnswerUserId,
-                Id = x.Id
+                Id = x.Id,
+                IsAnonimized=x.IsAnonimized,
+                QuestionUserName = User.FindFirstValue(ClaimTypes.Name),
             }).ToList();
             return View("Answer", dto);
         }
@@ -92,7 +97,6 @@ namespace AskFM.Controllers
 
             var user = _context.Users.Find(userId);
 
-
             dto.PageSize = pageSize;
             dto.User.Id = userId;
             dto.PageNumber = pageNumber;
@@ -102,12 +106,14 @@ namespace AskFM.Controllers
                 Text = question.Text,
                 AnswerUserName = question.AnswerUser?.UserName,
                 Id = question.Id,
+                IsAnonimized=question.IsAnonimized,
+                QuestionUserName= User.FindFirstValue(ClaimTypes.Name),
                 Comments = question.Comments.Select(comment => new CommentDto()
                 {
                     Text = comment.Text,
                     IsAnonimized = comment.IsAnonimized,
-                    UserId=comment.IsAnonimized ? null : comment.UserId,
-                    UserName= comment.IsAnonimized ? null : comment.UserName
+                    UserId = comment.IsAnonimized ? null : comment.UserId,
+                    UserName = comment.IsAnonimized ? null : comment.UserName,
                 }).ToList()
             }).ToList();
             return View("Page", dto);

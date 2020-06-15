@@ -19,20 +19,21 @@ namespace AskFM.Controllers
         {
             _context = context;
         }
-        [HttpPost("{Id}")]
-        public IActionResult Comments(int id, CommentDto commentDto)
+        [HttpPost]//TODO: move id to commentdto
+        public IActionResult Comments(CommentDto commentDto)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             _context.Comments.Add(new Comment()
             {
-                QuestionId = id,
+                QuestionId = commentDto.QuestionId,
                 Text = commentDto.Text,
                 IsAnonimized = commentDto.IsAnonimized,
                 UserId = userId,
-                UserName= User.FindFirstValue(ClaimTypes.Name)
+                UserName= User.FindFirstValue(ClaimTypes.Name),
             });
             _context.SaveChanges();
-            return LocalRedirect($"~/question/page");
+            var answerUserId = _context.Questions.Find(commentDto.QuestionId).AnswerUserId;
+            return LocalRedirect($"~/question/page?userId={answerUserId}");
         }
     }
-}
+}   
