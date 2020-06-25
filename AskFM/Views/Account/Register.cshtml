@@ -1,6 +1,6 @@
 ﻿@model AskFM.ViewModels.RegisterViewModel
 <h2>Регистрация нового пользователя</h2>
-<form method="post" asp-controller="Account" asp-action="Register">
+<form method="post" asp-controller="Account" asp-action="Register" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
         <label asp-for="Email"></label><br />
@@ -23,6 +23,9 @@
         <span asp-validation-for="PasswordConfirm"></span>
     </div>
     <div>
-        <input type="submit" value="Регистрация" />
+        <input type="file" name="uploadedFile" /><br>
+        <div>
+            <input type="submit" value="Регистрация" />
+        </div>
     </div>
 </form>

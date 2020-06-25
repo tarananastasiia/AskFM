@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AskFM.Models;
 using AskFM.ViewModels;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,14 +14,16 @@ namespace AskFM.Controllers
 {
     public class AccountController : Controller
     {
-        
+
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        IWebHostEnvironment _appEnvironment;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IWebHostEnvironment appEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _appEnvironment = appEnvironment;
         }
         [HttpGet]
         public IActionResult Register()
@@ -26,13 +31,32 @@ namespace AskFM.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model, IFormFile uploadedFile)
         {
             if (ModelState.IsValid)
             {
-                User user = new User { Email = model.Email, UserName = model.Email, Year = model.Year };
+                string path = "/UserFiles/" + uploadedFile.FileName;
+                if (uploadedFile != null)
+                {
+                    // путь к папке Files
+
+                    // сохраняем файл в папку Files в каталоге wwwroot
+                    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                    {
+                        await uploadedFile.CopyToAsync(fileStream);
+                    }
+                }
+                User user = new User
+                {
+                    Email = model.Email,
+                    UserName = model.Email,
+                    Year = model.Year,
+                    FileModel = new FileModel
+                    { Name = uploadedFile.FileName, Path = path }
+                };
                 // добавляем пользователя
                 var result = await _userManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
                     // установка куки

@@ -9,11 +9,13 @@ namespace AskFM.Models
 {
     public class ApplicationContext : IdentityDbContext<User>
     {
+        
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
             Database.EnsureCreated();
         }
+        public DbSet<FileModel> UserFiles { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Comment> Comments { get; set; }
     }

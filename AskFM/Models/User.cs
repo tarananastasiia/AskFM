@@ -10,5 +10,6 @@ namespace AskFM.Models
     public class User : IdentityUser
     {
         public int Year { get; set; }
+        public FileModel FileModel { get; set; }
     }
 }

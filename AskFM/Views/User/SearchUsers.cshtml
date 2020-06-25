@@ -1,0 +1,18 @@
+﻿@model AskFM.Models.UsersSearch
+@{
+    ViewBag.Title = "Каталог пользователей";
+}
+<h2>Пользователи</h2>
+
+<form method="get">
+    <div class="form-inline form-group">
+        <label class="control-label">Имя: </label>
+        <input name="name" class="form-control" />
+        <input type="submit" value="Найти" class="btn btn-default" />
+    </div>
+</form>
+
+@foreach (var item in Model.Users)
+{
+    <a href="~/question/page?userId=@item.Id" class="btn">@item.Email</a>
+}

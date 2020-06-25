@@ -9,6 +9,7 @@ using AskFM.Models;
 using AskFM.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
@@ -42,10 +43,10 @@ namespace AskFM.Controllers
                 QuestionUserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
                 Text = questionDto.Text,
                 Answer = questionDto.Answer,
-                IsAnonimized=questionDto.IsAnonimized,
+                IsAnonimized = questionDto.IsAnonimized,
             });
             _context.SaveChanges();
-            return LocalRedirect($"~/question/page");
+            return LocalRedirect($"~/question/page?userId={userId}");
         }
 
         [HttpGet("un-answeredquestions")]
@@ -61,7 +62,7 @@ namespace AskFM.Controllers
                 Text = x.Text,
                 AnswerUserId = x.AnswerUserId,
                 Id = x.Id,
-                IsAnonimized=x.IsAnonimized,
+                IsAnonimized = x.IsAnonimized,
                 QuestionUserName = User.FindFirstValue(ClaimTypes.Name),
             }).ToList();
             return View("Answer", dto);
@@ -97,6 +98,10 @@ namespace AskFM.Controllers
 
             var user = _context.Users.Find(userId);
 
+            if (userId != null)
+            {
+                dto.FileModel = new FileModel() { Path = _context.UserFiles.First().Path};
+            }
             dto.PageSize = pageSize;
             dto.User.Id = userId;
             dto.PageNumber = pageNumber;
@@ -106,10 +111,11 @@ namespace AskFM.Controllers
                 Text = question.Text,
                 AnswerUserName = question.AnswerUser?.UserName,
                 Id = question.Id,
-                IsAnonimized=question.IsAnonimized,
-                QuestionUserName= User.FindFirstValue(ClaimTypes.Name),
+                IsAnonimized = question.IsAnonimized,
+                QuestionUserName = User.FindFirstValue(ClaimTypes.Name),
                 Comments = question.Comments.Select(comment => new CommentDto()
                 {
+                    QuestionId = question.Id,
                     Text = comment.Text,
                     IsAnonimized = comment.IsAnonimized,
                     UserId = comment.IsAnonimized ? null : comment.UserId,

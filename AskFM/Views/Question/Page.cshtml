@@ -2,8 +2,20 @@
 @{
     ViewData["Title"] = "Page";
 }
-
 <h2>@Model.User.Name</h2>
+@if (Model.User.Id != null)
+{
+<p><img style='width:80px; height:60px;' src="@Url.Content(Model.FileModel.Path)"></p>
+}
+<div class="row"> 
+    <div class="col-lg-6">
+        <div class="input-group">
+            <span class="input-group-btn">
+                <a href="~/users" class="btn">Найти</a>
+            </span>
+        </div>
+    </div>
+</div>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,7 +45,6 @@
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
         <li>
-
             <a asp-controller="question"
                asp-action="page"
                asp-route-userId="@Model.User.Id"
@@ -73,23 +84,22 @@
                     <div class="panel-heading">@comment.UserName</div>
                 }
             }
-            @for (int i = 1; i < 2; i++)
-            {
-                <form asp-controller="comment" asp-action="@question.Id" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <input name="Text" class="form-control" />
-                        <span class="text-danger"></span>
-                    </div>
-                    <div>
-                        <label asp-for=@question.Comments.FirstOrDefault().IsAnonimized></label><br />
-                        <input asp-for=@question.Comments.FirstOrDefault().IsAnonimized />
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Прокоментировать" class="btn btn-primary" />
-                    </div>
-                </form>
-            }
+            <form asp-controller="comment" asp-action="" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input name="Text" class="form-control" />
+                    <span class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for=@question.Comments.FirstOrDefault().IsAnonimized></label><br />
+                    <input asp-for=@question.Comments.FirstOrDefault().IsAnonimized />
+                </div>
+                <input name="QuestionId" type="hidden" value=@question.Id>
+                <div class="form-group">
+                    <input type="submit" value="Прокоментировать" class="btn btn-primary" />
+                </div>
+            </form>
+
         </div>
     </div>
 }
