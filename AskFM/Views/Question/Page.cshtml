@@ -3,9 +3,8 @@
     ViewData["Title"] = "Page";
 }
 <h2>@Model.User.Name</h2>
-@if (Model.User.Id != null)
-{
-<p><img style='width:80px; height:60px;' src="@Url.Content(Model.FileModel.Path)"></p>
+@if (Model.User.Id != null){
+<img src="~/users/image?userId=@Model.User.Id" style="width:150px;height:200px;" />
 }
 <div class="row"> 
     <div class="col-lg-6">

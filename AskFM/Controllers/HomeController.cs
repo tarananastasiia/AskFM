@@ -8,14 +8,17 @@ using Microsoft.Extensions.Logging;
 using AskFM.Models;
 using AskFM.ViewModels;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace AskFM.Controllers
 {
     public class HomeController : Controller
     {
+
         public IActionResult Index()
         {
-                return Redirect($"~/question/page");
+
+            return Redirect($"~/question/page");
         }
     }
 }

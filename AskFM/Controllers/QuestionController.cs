@@ -98,10 +98,7 @@ namespace AskFM.Controllers
 
             var user = _context.Users.Find(userId);
 
-            if (userId != null)
-            {
-                dto.FileModel = new FileModel() { Path = _context.UserFiles.First().Path};
-            }
+           
             dto.PageSize = pageSize;
             dto.User.Id = userId;
             dto.PageNumber = pageNumber;

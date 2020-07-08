@@ -9,53 +9,69 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 namespace AskFM.Controllers
 {
     public class AccountController : Controller
     {
-
+        private readonly ApplicationContext _context;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         IWebHostEnvironment _appEnvironment;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IWebHostEnvironment appEnvironment)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IWebHostEnvironment appEnvironment, ApplicationContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appEnvironment = appEnvironment;
+            _context = context;
         }
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model, IFormFile uploadedFile)
         {
             if (ModelState.IsValid)
             {
-                string path = "/UserFiles/" + uploadedFile.FileName;
+                var imageId = Guid.NewGuid();
+                string path = null;
+                //using (var ms = new MemoryStream())
+                //{
+                //    uploadedFile.CopyTo(ms);
+                //    var fileBytes = ms.ToArray();
+                //    string s = Convert.ToBase64String(fileBytes);
+                //}
                 if (uploadedFile != null)
-                {
-                    // путь к папке Files
+                    path = "/Image/" + imageId + Path.GetExtension(uploadedFile.FileName);
 
-                    // сохраняем файл в папку Files в каталоге wwwroot
-                    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
-                    {
-                        await uploadedFile.CopyToAsync(fileStream);
-                    }
+                using (var images = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    await uploadedFile.CopyToAsync(images);
                 }
+
                 User user = new User
                 {
                     Email = model.Email,
                     UserName = model.Email,
                     Year = model.Year,
-                    FileModel = new FileModel
-                    { Name = uploadedFile.FileName, Path = path }
                 };
-                // добавляем пользователя
+
                 var result = await _userManager.CreateAsync(user, model.Password);
+
+                Image image = new Image()
+                {
+                    UserId = user.Id,
+                    Path = path,
+                };
+
+                _context.Images.Add(image);
+                _context.SaveChanges();
 
                 if (result.Succeeded)
                 {
@@ -73,6 +89,8 @@ namespace AskFM.Controllers
             }
             return View(model);
         }
+
+
 
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
