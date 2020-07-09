@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AskFM.Models;
+using AskFM.Services;
+using AskFM.Services.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,6 +32,8 @@ namespace AskFM
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
+
+            services.AddTransient<IFileStorageService, FileStorageService>();
             services.AddControllersWithViews();
         }
 
@@ -51,6 +55,10 @@ namespace AskFM
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            bool exists = System.IO.Directory.Exists("C:\\Image");
+            if (!exists)
+                System.IO.Directory.CreateDirectory("C:\\Image");
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AskFM.Models
 {
-    public class Image
+    public class ImageMetaData
     {
 
         public int ImageId { get; set; }

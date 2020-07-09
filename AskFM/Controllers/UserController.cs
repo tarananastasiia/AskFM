@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AskFM.Models;
+using AskFM.Services.Contracts;
 using AskFM.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,12 +16,13 @@ namespace AskFM.Controllers
     [Route("users")]
     public class UserController : Controller
     {
-        IWebHostEnvironment _appEnvironment;
         private readonly ApplicationContext _context;
-        public UserController(IWebHostEnvironment appEnvironment, ApplicationContext context)
+        private readonly IFileStorageService _fileStorageService;
+        public UserController(ApplicationContext context,
+            IFileStorageService fileStorageService)
         {
-            _appEnvironment = appEnvironment;
             _context = context;
+            _fileStorageService = fileStorageService;
         }
 
         [HttpGet("image")]
@@ -30,9 +33,10 @@ namespace AskFM.Controllers
                 .FirstOrDefault(x => x.Id == userId);
 
             var imageMetaData = user.Images;
-            var path = imageMetaData.First().Path; 
+            var path = imageMetaData.First().Path;
 
-            var image = System.IO.File.OpenRead(_appEnvironment.WebRootPath+path);
+
+            var image = new MemoryStream(_fileStorageService.Read(path));
             return File(image, "image/jpeg");
         }
 

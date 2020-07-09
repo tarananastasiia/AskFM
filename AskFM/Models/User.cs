@@ -12,6 +12,6 @@ namespace AskFM.Models
     public class User : IdentityUser
     {
         public int Year { get; set; }
-        public List<Image> Images { get; set; }
+        public List<ImageMetaData> Images { get; set; }
     }
 }

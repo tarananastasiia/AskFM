@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AskFM.Models;
+using AskFM.Repositories.IRepositories;
+using AskFM.Services.Contracts;
 using AskFM.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -16,17 +18,24 @@ namespace AskFM.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly ApplicationContext _context;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         IWebHostEnvironment _appEnvironment;
+        private readonly IFileStorageService _imageStorageService;
+        IImageMetaDataRepository _imageMetaDataRepository;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IWebHostEnvironment appEnvironment, ApplicationContext context)
+
+        public AccountController(UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            IWebHostEnvironment appEnvironment,
+            IFileStorageService imageStorageService,
+             IImageMetaDataRepository imageMetaDataRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appEnvironment = appEnvironment;
-            _context = context;
+            _imageStorageService = imageStorageService;
+            _imageMetaDataRepository = imageMetaDataRepository;
         }
         [HttpGet]
         public IActionResult Register()
@@ -41,18 +50,19 @@ namespace AskFM.Controllers
             {
                 var imageId = Guid.NewGuid();
                 string path = null;
-                //using (var ms = new MemoryStream())
-                //{
-                //    uploadedFile.CopyTo(ms);
-                //    var fileBytes = ms.ToArray();
-                //    string s = Convert.ToBase64String(fileBytes);
-                //}
+
                 if (uploadedFile != null)
                     path = "/Image/" + imageId + Path.GetExtension(uploadedFile.FileName);
 
-                using (var images = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                if (uploadedFile.Length > 0)
                 {
-                    await uploadedFile.CopyToAsync(images);
+                    using (var ms = new MemoryStream())
+                    {
+                        uploadedFile.CopyTo(ms);
+                        var fileBytes = ms.ToArray();
+
+                        _imageStorageService.Save(fileBytes, path);
+                    }
                 }
 
                 User user = new User
@@ -64,14 +74,15 @@ namespace AskFM.Controllers
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
-                Image image = new Image()
+                ImageMetaData image = new ImageMetaData()
                 {
                     UserId = user.Id,
                     Path = path,
                 };
 
-                _context.Images.Add(image);
-                _context.SaveChanges();
+                _imageMetaDataRepository.Save(image);
+                //_context.ImagesMetaData.Add(image);
+                //_context.SaveChanges();
 
                 if (result.Succeeded)
                 {
@@ -90,8 +101,7 @@ namespace AskFM.Controllers
             return View(model);
         }
 
-
-
+       
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {

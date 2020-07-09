@@ -14,10 +14,10 @@ namespace AskFM.ViewModels
         public int QuestionsCount { get; set;}
         public int PageSize { get; set; }
         public int PageNumber { get; set; }
-        public Image Image { get; set; }
+        public ImageMetaData Image { get; set; }
         public UserPageDTO()
         {
-            Image = new Image();
+            Image = new ImageMetaData();
             User = new UserDto();
             Questions = new List<QuestionDto>();
         }

@@ -16,7 +16,7 @@ namespace AskFM.Models
             Database.EnsureCreated();
         }
 
-        public DbSet<Image> Images { get; set; }
+        public DbSet<ImageMetaData> ImagesMetaData { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Comment> Comments { get; set; }
     }
