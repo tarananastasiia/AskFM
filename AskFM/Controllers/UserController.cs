@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AskFM.Models;
+using AskFM.Services;
 using AskFM.Services.Contracts;
 using AskFM.ViewModels;
 using Microsoft.AspNetCore.Hosting;
@@ -17,26 +18,18 @@ namespace AskFM.Controllers
     public class UserController : Controller
     {
         private readonly ApplicationContext _context;
-        private readonly IFileStorageService _fileStorageService;
+        private readonly IImageService _imageService;
         public UserController(ApplicationContext context,
-            IFileStorageService fileStorageService)
+            IImageService imageService)
         {
             _context = context;
-            _fileStorageService = fileStorageService;
+            _imageService = imageService;
         }
 
         [HttpGet("image")]
         public IActionResult GetImage(string userId)
         {
-            var user = _context.Users
-                .Include(x => x.Images)
-                .FirstOrDefault(x => x.Id == userId);
-
-            var imageMetaData = user.Images;
-            var path = imageMetaData.First().Path;
-
-
-            var image = new MemoryStream(_fileStorageService.Read(path));
+            var image = _imageService.GetContent(userId);
             return File(image, "image/jpeg");
         }
 

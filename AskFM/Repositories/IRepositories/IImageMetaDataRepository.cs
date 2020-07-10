@@ -8,6 +8,7 @@ namespace AskFM.Repositories.IRepositories
 {
     public interface IImageMetaDataRepository
     {
-        void Save(ImageMetaData imageMetaData);
+        void Save(ImageMetaData image);
+        ImageMetaData Get(Func<ImageMetaData, bool> predicate);
     }
 }

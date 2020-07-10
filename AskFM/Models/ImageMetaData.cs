@@ -10,7 +10,7 @@ namespace AskFM.Models
 {
     public class ImageMetaData
     {
-
+        [Key]
         public int ImageId { get; set; }
         public string Path { get; set; }
         public User User { get; set; }

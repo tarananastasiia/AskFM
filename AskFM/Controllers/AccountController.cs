@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AskFM.Models;
 using AskFM.Repositories.IRepositories;
+using AskFM.Services;
 using AskFM.Services.Contracts;
 using AskFM.ViewModels;
 using Microsoft.AspNetCore.Hosting;
@@ -20,22 +21,16 @@ namespace AskFM.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        IWebHostEnvironment _appEnvironment;
-        private readonly IFileStorageService _imageStorageService;
-        IImageMetaDataRepository _imageMetaDataRepository;
+        private readonly IImageService _imageService;
 
 
         public AccountController(UserManager<User> userManager,
             SignInManager<User> signInManager,
-            IWebHostEnvironment appEnvironment,
-            IFileStorageService imageStorageService,
-             IImageMetaDataRepository imageMetaDataRepository)
+            IImageService imageService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _appEnvironment = appEnvironment;
-            _imageStorageService = imageStorageService;
-            _imageMetaDataRepository = imageMetaDataRepository;
+            _imageService = imageService;
         }
         [HttpGet]
         public IActionResult Register()
@@ -48,23 +43,6 @@ namespace AskFM.Controllers
         {
             if (ModelState.IsValid)
             {
-                var imageId = Guid.NewGuid();
-                string path = null;
-
-                if (uploadedFile != null)
-                    path = "/Image/" + imageId + Path.GetExtension(uploadedFile.FileName);
-
-                if (uploadedFile.Length > 0)
-                {
-                    using (var ms = new MemoryStream())
-                    {
-                        uploadedFile.CopyTo(ms);
-                        var fileBytes = ms.ToArray();
-
-                        _imageStorageService.Save(fileBytes, path);
-                    }
-                }
-
                 User user = new User
                 {
                     Email = model.Email,
@@ -74,15 +52,7 @@ namespace AskFM.Controllers
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
-                ImageMetaData image = new ImageMetaData()
-                {
-                    UserId = user.Id,
-                    Path = path,
-                };
-
-                _imageMetaDataRepository.Save(image);
-                //_context.ImagesMetaData.Add(image);
-                //_context.SaveChanges();
+                _imageService.Save(user, uploadedFile);
 
                 if (result.Succeeded)
                 {

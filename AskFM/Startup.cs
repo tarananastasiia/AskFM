@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AskFM.Models;
+using AskFM.Repositories;
+using AskFM.Repositories.IRepositories;
 using AskFM.Services;
 using AskFM.Services.Contracts;
 using Microsoft.AspNetCore.Builder;
@@ -35,6 +37,11 @@ namespace AskFM
 
             services.AddTransient<IFileStorageService, FileStorageService>();
             services.AddControllersWithViews();
+
+            services.AddTransient<IImageService, ImageService>();
+            services.AddControllersWithViews();
+
+            services.AddScoped<IImageMetaDataRepository, ImageMetaDataRepository>();
         }
 
 
