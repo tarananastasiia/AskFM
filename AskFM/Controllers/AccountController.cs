@@ -19,13 +19,13 @@ namespace AskFM.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<Users> _userManager;
+        private readonly SignInManager<Users> _signInManager;
         private readonly IImageService _imageService;
 
 
-        public AccountController(UserManager<User> userManager,
-            SignInManager<User> signInManager,
+        public AccountController(UserManager<Users> userManager,
+            SignInManager<Users> signInManager,
             IImageService imageService)
         {
             _userManager = userManager;
@@ -43,7 +43,7 @@ namespace AskFM.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User
+                Users user = new Users
                 {
                     Email = model.Email,
                     UserName = model.Email,

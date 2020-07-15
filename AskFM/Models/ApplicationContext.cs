@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AskFM.Models
 {
-    public class ApplicationContext : IdentityDbContext<User>
+    public class ApplicationContext : IdentityDbContext<Users>
     {
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options)

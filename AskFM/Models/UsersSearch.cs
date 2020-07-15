@@ -7,7 +7,7 @@ namespace AskFM.Models
 {
     public class UsersSearch
     {
-        public List<User> Users { get; set; }
+        public List<Users> Users { get; set; }
         public string Name { get; set; }
     }
 }

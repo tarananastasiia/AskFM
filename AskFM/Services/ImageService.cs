@@ -20,7 +20,7 @@ namespace AskFM.Services
             _imageMetaDataRepository = imageMetaDataRepository;
             _imageStorageService = imageStorageService;
         }
-        public void Save(User user,IFormFile uploadedFile)
+        public void Save(Users user,IFormFile uploadedFile)
         {
             if (uploadedFile.Length > 0)
             {

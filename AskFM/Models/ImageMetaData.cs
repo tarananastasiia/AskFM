@@ -13,7 +13,7 @@ namespace AskFM.Models
         [Key]
         public int ImageId { get; set; }
         public string Path { get; set; }
-        public User User { get; set; }
+        public Users User { get; set; }
 
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }

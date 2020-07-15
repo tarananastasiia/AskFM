@@ -32,7 +32,7 @@ namespace AskFM
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<Users, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
 
             services.AddTransient<IFileStorageService, FileStorageService>();
@@ -40,6 +40,11 @@ namespace AskFM
 
             services.AddTransient<IImageService, ImageService>();
             services.AddControllersWithViews();
+
+            services.AddTransient<IQuestionService, QuestionService>();
+            services.AddControllersWithViews();
+
+            services.AddScoped<IQuestionRepository, QuestionRepository>();
 
             services.AddScoped<IImageMetaDataRepository, ImageMetaDataRepository>();
         }
