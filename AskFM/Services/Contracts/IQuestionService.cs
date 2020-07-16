@@ -10,7 +10,8 @@ namespace AskFM.Services.Contracts
     public interface IQuestionService
     {
         void Add(QuestionDto questionDto, string userId, string questionUserId);
-        UserPageDTO UnansweredQuestionsModelsToList( string userId, string userName);
+        UserPageDTO UnansweredQuestionsDto( string userId, string userName);
         void Answer(QuestionDto questionDto, int id);
+        UserPageDTO PageDTO(string userId, string questionName, int pageNumber = 1, int pageSize = 3);
     }
 }

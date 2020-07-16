@@ -12,30 +12,25 @@ using System.Threading.Tasks;
 
 namespace AskFM.Services
 {
-    public class QuestionService: IQuestionService
+    public class QuestionService : IQuestionService
     {
-        private readonly ApplicationContext _context;
         IQuestionRepository _questionRepository;
 
-        public QuestionService(ApplicationContext context,
-            IQuestionRepository questionRepository )
+        public QuestionService(IQuestionRepository questionRepository)
         {
-            _context = context;
             _questionRepository = questionRepository;
         }
 
         public void Add(QuestionDto questionDto, string userId, string questionUserId)
         {
-            _questionRepository.Add(questionDto,userId,questionUserId);
+            _questionRepository.Add(questionDto, userId, questionUserId);
             _questionRepository.Save();
         }
 
-        public UserPageDTO UnansweredQuestionsModelsToList(string userId, string userName)
+        public UserPageDTO UnansweredQuestionsDto(string userId, string userName)
         {
             var dto = new UserPageDTO();
-            var models = _context.Questions
-                .Where(x => x.AnswerUserId == userId && x.Answer == null).ToList();
-            dto.Questions = models.Select(x => new QuestionDto()
+            dto.Questions = _questionRepository.UnansweredQuestionsModels(userId).Select(x => new QuestionDto()
             {
                 QuestionUserId = x.QuestionUserId,
                 Text = x.Text,
@@ -44,13 +39,38 @@ namespace AskFM.Services
                 IsAnonimized = x.IsAnonimized,
                 QuestionUserName = userName,
             }).ToList();
-            return (dto);
+            return dto;
         }
         public void Answer(QuestionDto questionDto, int id)
         {
-            var question = _context.Questions.First(x => x.Id == id);
-            question.Answer = questionDto.Answer;
+            _questionRepository.Answer(id).Answer = questionDto.Answer;
             _questionRepository.Save();
+        }
+        public UserPageDTO PageDTO(string userId, string questionName, int pageNumber = 1, int pageSize = 3)
+        {
+            var dto = new UserPageDTO();
+            dto.QuestionsCount=_questionRepository.QuestionCount(userId);
+            dto.PageSize = pageSize;
+            dto.User.Id = userId;
+            dto.PageNumber = pageNumber;
+            dto.Questions = _questionRepository.PageModel(userId, pageNumber, pageSize).Select(question => new QuestionDto()
+            {
+                Answer = question.Answer,
+                Text = question.Text,
+                AnswerUserName = question.AnswerUser?.UserName,
+                Id = question.Id,
+                IsAnonimized = question.IsAnonimized,
+                QuestionUserName = questionName,
+                Comments = question.Comments.Select(comment => new CommentDto()
+                {
+                    QuestionId = question.Id,
+                    Text = comment.Text,
+                    IsAnonimized = comment.IsAnonimized,
+                    UserId = comment.IsAnonimized ? null : comment.UserId,
+                    UserName = comment.IsAnonimized ? null : comment.UserName,
+                }).ToList()
+            }).ToList();
+            return dto;
         }
     }
 }

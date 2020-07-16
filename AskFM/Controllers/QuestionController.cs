@@ -21,12 +21,10 @@ namespace AskFM.Controllers
     [Route("question")]
     public class QuestionController : Controller
     {
-        private readonly ApplicationContext _context;
         IQuestionService _questionService;
 
-        public QuestionController(ApplicationContext context, IQuestionService questionService)
+        public QuestionController( IQuestionService questionService)
         {
-            _context = context;
             _questionService = questionService;
         }
         [HttpGet]
@@ -52,7 +50,7 @@ namespace AskFM.Controllers
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             string userName = User.FindFirstValue(ClaimTypes.Name);
-            return View("Answer", _questionService.UnansweredQuestionsModelsToList(userId, userName));
+            return View("Answer", _questionService.UnansweredQuestionsDto(userId, userName));
         }
 
         [HttpPost("{Id}")]
@@ -69,40 +67,8 @@ namespace AskFM.Controllers
             {
                 userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             }
-            //var models = _context.Questions
-            //                .Include(x => x.AnswerUser)
-            //                .Include(x => x.Comments)
-            //                .Where(x => x.AnswerUserId == userId && x.Answer != null)
-            //                .Skip((pageNumber - 1) * pageSize)
-            //                .Take(pageSize).ToList();
-
-            var user = _context.Users.Find(userId);
-
             string questionName = User.FindFirstValue(ClaimTypes.Name);
-
-            //var dto = new UserPageDTO();
-            //dto.QuestionsCount = _context.Questions.Count(x => x.AnswerUserId == userId && x.Answer != null);
-            //dto.PageSize = pageSize;
-            //dto.User.Id = userId;
-            //dto.PageNumber = pageNumber;
-            //dto.Questions = models.Select(question => new QuestionDto()
-            //{
-            //    Answer = question.Answer,
-            //    Text = question.Text,
-            //    AnswerUserName = question.AnswerUser?.UserName,
-            //    Id = question.Id,
-            //    IsAnonimized = question.IsAnonimized,
-            //    QuestionUserName = User.FindFirstValue(ClaimTypes.Name),
-            //    Comments = question.Comments.Select(comment => new CommentDto()
-            //    {
-            //        QuestionId = question.Id,
-            //        Text = comment.Text,
-            //        IsAnonimized = comment.IsAnonimized,
-            //        UserId = comment.IsAnonimized ? null : comment.UserId,
-            //        UserName = comment.IsAnonimized ? null : comment.UserName,
-            //    }).ToList()
-            //}).ToList();
-            return View("Page", dto);
+            return View("Page", _questionService.PageDTO(userId,questionName,pageNumber,pageSize));
         }
 
     }

@@ -36,43 +36,34 @@ namespace AskFM.Repositories
         {
             _context.SaveChanges();
         }
-
-        public void QuestionModelsInPage(string userId, int pageNumber = 1, int pageSize = 3)
+        public int QuestionCount(string userId)
         {
+            int count = _context.Questions.Count(x => x.AnswerUserId == userId && x.Answer != null);
+            return count;
+        }
+
+        public List<Question> UnansweredQuestionsModels(string userId)
+        {
+            var models = _context.Questions
+                .Where(x => x.AnswerUserId == userId && x.Answer == null).ToList();
+            return models;
+        }
+
+        public Question Answer(int id)
+        {
+            var question = _context.Questions.First(x => x.Id == id);
+            return question;
+        }
+        public List<Question> PageModel(string userId, int pageNumber = 1, int pageSize = 3)
+        {
+            var user = _context.Users.Find(userId);
             var models = _context.Questions
                            .Include(x => x.AnswerUser)
                            .Include(x => x.Comments)
                            .Where(x => x.AnswerUserId == userId && x.Answer != null)
                            .Skip((pageNumber - 1) * pageSize)
                            .Take(pageSize).ToList();
-        }
-
-        public UserPageDTO PageDTOs(string userId, string questionName)
-        {
-            int pageSize = 3;
-            int pageNumber = 1;
-            var dto = new UserPageDTO();
-            dto.QuestionsCount = _context.Questions.Count(x => x.AnswerUserId == userId && x.Answer != null);
-            dto.PageSize = pageSize;
-            dto.User.Id = userId;
-            dto.PageNumber = pageNumber;
-            dto.Questions = models.Select(question => new QuestionDto()
-            {
-                Answer = question.Answer,
-                Text = question.Text,
-                AnswerUserName = question.AnswerUser?.UserName,
-                Id = question.Id,
-                IsAnonimized = question.IsAnonimized,
-                QuestionUserName = questionName,
-                Comments = question.Comments.Select(comment => new CommentDto()
-                {
-                    QuestionId = question.Id,
-                    Text = comment.Text,
-                    IsAnonimized = comment.IsAnonimized,
-                    UserId = comment.IsAnonimized ? null : comment.UserId,
-                    UserName = comment.IsAnonimized ? null : comment.UserName,
-                }).ToList()
-            }).ToList();
+            return models;
         }
     }
 }
