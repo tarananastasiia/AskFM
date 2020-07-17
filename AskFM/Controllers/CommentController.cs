@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using AskFM.Models;
+using AskFM.Services.Contracts;
 using AskFM.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,27 +14,21 @@ namespace AskFM.Controllers
     [Route("comment")]
     public class CommentController : Controller
     {
-        private readonly ApplicationContext _context;
+        ICommentsService _commentsService;
 
-        public CommentController(ApplicationContext context)
+        public CommentController(ICommentsService commentsService)
         {
-            _context = context;
+            _commentsService = commentsService;
         }
         [HttpPost]//TODO: move id to commentdto
         public IActionResult Comments(CommentDto commentDto)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            _context.Comments.Add(new Comment()
-            {
-                QuestionId = commentDto.QuestionId,
-                Text = commentDto.Text,
-                IsAnonimized = commentDto.IsAnonimized,
-                UserId = userId,
-                UserName= User.FindFirstValue(ClaimTypes.Name),
-            });
-            _context.SaveChanges();
-            var answerUserId = _context.Questions.Find(commentDto.QuestionId).AnswerUserId;
-            return LocalRedirect($"~/question/page?userId={answerUserId}");
+            string userName = User.FindFirstValue(ClaimTypes.Name);
+
+            _commentsService.NewComment(commentDto,userId,userName);
+
+            return LocalRedirect($"~/question/page?userId={_commentsService.UserPageId(commentDto)}");
         }
     }
 }   

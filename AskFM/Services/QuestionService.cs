@@ -24,7 +24,6 @@ namespace AskFM.Services
         public void Add(QuestionDto questionDto, string userId, string questionUserId)
         {
             _questionRepository.Add(questionDto, userId, questionUserId);
-            _questionRepository.Save();
         }
 
         public UserPageDTO UnansweredQuestionsDto(string userId, string userName)
@@ -43,8 +42,7 @@ namespace AskFM.Services
         }
         public void Answer(QuestionDto questionDto, int id)
         {
-            _questionRepository.Answer(id).Answer = questionDto.Answer;
-            _questionRepository.Save();
+            _questionRepository.Answer(questionDto,id);
         }
         public UserPageDTO PageDTO(string userId, string questionName, int pageNumber = 1, int pageSize = 3)
         {

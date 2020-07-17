@@ -30,12 +30,9 @@ namespace AskFM.Repositories
                 Answer = questionDto.Answer,
                 IsAnonimized = questionDto.IsAnonimized,
             });
-        }
-
-        public void Save()
-        {
             _context.SaveChanges();
         }
+
         public int QuestionCount(string userId)
         {
             int count = _context.Questions.Count(x => x.AnswerUserId == userId && x.Answer != null);
@@ -49,10 +46,10 @@ namespace AskFM.Repositories
             return models;
         }
 
-        public Question Answer(int id)
+        public void Answer(QuestionDto questionDto, int id)
         {
             var question = _context.Questions.First(x => x.Id == id);
-            return question;
+            question.Answer = questionDto.Answer;
         }
         public List<Question> PageModel(string userId, int pageNumber = 1, int pageSize = 3)
         {

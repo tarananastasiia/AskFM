@@ -44,7 +44,8 @@ namespace AskFM
             services.AddTransient<IQuestionService, QuestionService>();
             services.AddControllersWithViews();
 
-            services.AddScoped<IQuestionRepository, QuestionRepository>();
+            services.AddTransient<ICommentsService, CommentsService>();
+            services.AddControllersWithViews();
 
             services.AddScoped<IImageMetaDataRepository, ImageMetaDataRepository>();
         }
