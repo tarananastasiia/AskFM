@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Enumeration;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using AskFM.Models;
 using AskFM.Repositories.IRepositories;
@@ -16,7 +14,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using ViewModels.ViewModels;
 
 namespace AskFM.Controllers
 {
@@ -55,14 +52,7 @@ namespace AskFM.Controllers
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
-                FormFileDto uploadedFiles = new FormFileDto
-                {
-                    Length = uploadedFile.Length,
-                    FileName = uploadedFile.FileName,
-                    ContentStream = uploadedFile.
-                };
-
-                _imageService.Save(user, uploadedFiles);
+                _imageService.Save(user, uploadedFile);
 
                 if (result.Succeeded)
                 {
@@ -81,7 +71,7 @@ namespace AskFM.Controllers
             return View(model);
         }
 
-
+       
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {

@@ -54,9 +54,9 @@ namespace AskFM.Controllers
         }
 
         [HttpPost("{Id}")]
-        public IActionResult Answer(Question question, int id)
+        public IActionResult Answer(QuestionDto questionDto, int id)
         {
-            _questionService.Answer(question, id);
+            _questionService.Answer(questionDto, id);
             return LocalRedirect($"~/question/page");
         }
 

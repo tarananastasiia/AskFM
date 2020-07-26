@@ -17,6 +17,7 @@ namespace AskFM.Controllers
 
         public IActionResult Index()
         {
+
             return Redirect($"~/question/page");
         }
     }

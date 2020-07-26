@@ -38,16 +38,21 @@ namespace AskFM
             services.AddTransient<IFileStorageService, FileStorageService>();
             services.AddControllersWithViews();
 
+            services.AddScoped<IImageMetaDataRepository, ImageMetaDataRepository>();
+
             services.AddTransient<IImageService, ImageService>();
             services.AddControllersWithViews();
+
+            services.AddScoped<IQuestionRepository, QuestionRepository>();
 
             services.AddTransient<IQuestionService, QuestionService>();
             services.AddControllersWithViews();
 
+            services.AddScoped<ICommentsRepositories, CommentsRepositories>();
+
             services.AddTransient<ICommentsService, CommentsService>();
             services.AddControllersWithViews();
 
-            services.AddScoped<IImageMetaDataRepository, ImageMetaDataRepository>();
         }
 
 

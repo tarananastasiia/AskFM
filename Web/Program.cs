@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace AskFM
+namespace Web
 {
     public class Program
     {
@@ -21,6 +21,6 @@ namespace AskFM
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                }).UseDefaultServiceProvider(sp => sp.ValidateOnBuild = false);
+                });
     }
 }
