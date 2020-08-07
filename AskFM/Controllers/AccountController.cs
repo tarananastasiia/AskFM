@@ -59,9 +59,9 @@ namespace AskFM.Controllers
                 {
                     Length = uploadedFile.Length,
                     FileName = uploadedFile.FileName,
-                    ContentStream = uploadedFile.
                 };
 
+                uploadedFile.CopyTo(uploadedFiles.ContentStream);
                 _imageService.Save(user, uploadedFiles);
 
                 if (result.Succeeded)

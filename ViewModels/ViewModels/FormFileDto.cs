@@ -11,6 +11,6 @@ namespace ViewModels.ViewModels
     {
         public long Length { get; set; }
         public string FileName { get; set; }
-        public MemoryStream ContentStream { get; set; }
+        public MemoryStream ContentStream { get; set; } = new MemoryStream();
     }
 }
