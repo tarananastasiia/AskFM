@@ -8,7 +8,7 @@ namespace AskFM.Services.Contracts
 {
     public interface ICommentsService
     {
-        void NewComment(CommentDto commentDto, string userId, string userName);
+        void CreateComment(CommentDto commentDto);
         string UserPageId(CommentDto commentDto);
     }
 }

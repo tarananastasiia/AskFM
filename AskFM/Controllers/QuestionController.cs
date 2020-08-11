@@ -48,9 +48,10 @@ namespace AskFM.Controllers
         [HttpGet("un-answeredquestions")]
         public IActionResult UnansweredQuestions()
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            string userName = User.FindFirstValue(ClaimTypes.Name);
-            return View("Answer", _questionService.UnansweredQuestionsDto(userId, userName));
+            QuestionDto questionDto = new QuestionDto();
+            questionDto.QuestionUserId= User.FindFirstValue(ClaimTypes.NameIdentifier);
+            questionDto.QuestionUserName = User.FindFirstValue(ClaimTypes.Name);
+            return View("Answer", _questionService.UnansweredQuestionsDto(questionDto));
         }
 
         [HttpPost("{Id}")]

@@ -15,7 +15,7 @@ namespace AskFM.Repositories
         {
             _context = context;
         }
-        public void Add(Comment comment, string userId, string userName)
+        public void Add(Comment comment)
         {
             _context.Comments.Add(comment); 
             _context.SaveChanges();

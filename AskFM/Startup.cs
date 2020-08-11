@@ -7,6 +7,7 @@ using AskFM.Repositories;
 using AskFM.Repositories.IRepositories;
 using AskFM.Services;
 using AskFM.Services.Contracts;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +30,17 @@ namespace AskFM
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+            services.AddMvc();
+
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -53,6 +65,7 @@ namespace AskFM
             services.AddTransient<ICommentsService, CommentsService>();
             services.AddControllersWithViews();
 
+            services.AddSwaggerGen();
         }
 
 
@@ -62,6 +75,7 @@ namespace AskFM
 
             app.UseStaticFiles();
 
+         
             app.UseRouting();
 
             app.UseAuthentication();    // подключение аутентификации
@@ -77,6 +91,14 @@ namespace AskFM
             bool exists = System.IO.Directory.Exists("C:\\Image");
             if (!exists)
                 System.IO.Directory.CreateDirectory("C:\\Image");
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
         }
     }
 }

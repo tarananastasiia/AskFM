@@ -35,13 +35,13 @@ namespace AskFM.Controllers
             _signInManager = signInManager;
             _imageService = imageService;
         }
-        [HttpGet]
+        [HttpGet("Register")]
         public IActionResult Register()
         {
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterViewModel model, IFormFile uploadedFile)
         {
             if (ModelState.IsValid)
@@ -82,13 +82,13 @@ namespace AskFM.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("Login")]
         public IActionResult Login(string returnUrl = null)
         {
             return View(new LoginViewModel { ReturnUrl = returnUrl });
         }
 
-        [HttpPost]
+        [HttpPost("Login")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {

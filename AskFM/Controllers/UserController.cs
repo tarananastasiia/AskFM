@@ -7,6 +7,7 @@ using AskFM.Models;
 using AskFM.Services;
 using AskFM.Services.Contracts;
 using AskFM.ViewModels;
+using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,7 @@ namespace AskFM.Controllers
             return File(image, "image/jpeg");
         }
 
+        [HttpGet("SearchUsers")]
         public IActionResult SearchUsers(string name)
         {
             List<Users> users = new List<Users>();

@@ -39,7 +39,8 @@ namespace AskFM.Repositories
         public void Answer(Question question, int id)
         {
             var questions = _context.Questions.First(x => x.Id == id);
-            question.Answer = question.Answer;
+            questions.Answer = question.Answer;
+            _context.SaveChanges();
         }
         public List<Question> PageModel(string userId, int pageNumber = 1, int pageSize = 3)
         {

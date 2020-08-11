@@ -23,10 +23,9 @@ namespace AskFM.Controllers
         [HttpPost]//TODO: move id to commentdto
         public IActionResult Comments(CommentDto commentDto)
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            string userName = User.FindFirstValue(ClaimTypes.Name);
+            commentDto.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            _commentsService.NewComment(commentDto,userId,userName);
+            _commentsService.CreateComment(commentDto);
 
             return LocalRedirect($"~/question/page?userId={_commentsService.UserPageId(commentDto)}");
         }

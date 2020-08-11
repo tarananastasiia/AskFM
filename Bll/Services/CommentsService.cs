@@ -2,6 +2,7 @@
 using AskFM.Repositories.IRepositories;
 using AskFM.Services.Contracts;
 using AskFM.ViewModels;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,24 +14,21 @@ namespace AskFM.Services
     {
         private readonly ApplicationContext _context;
         ICommentsRepositories _commentsRepositories;
+        private readonly IMapper _mapper;
 
-        public CommentsService(ApplicationContext context, ICommentsRepositories commentsRepositories)
+        public CommentsService(ApplicationContext context, ICommentsRepositories commentsRepositories,
+            IMapper mapper)
         {
             _commentsRepositories = commentsRepositories;
             _context = context;
+            _mapper = mapper;
         }
 
-        public void NewComment(CommentDto commentDto, string userId, string userName)
+        public void CreateComment(CommentDto commentDto)
         {
-            var comment = new Comment
-            {
-                QuestionId = commentDto.QuestionId,
-                Text = commentDto.Text,
-                IsAnonimized = commentDto.IsAnonimized,
-                UserId = userId,
-                UserName = userName,
-            };
-            _commentsRepositories.Add(comment,userId,userName);
+            Comment comment = _mapper.Map<Comment>(commentDto);
+          
+            _commentsRepositories.Add(comment);
         }
         public string UserPageId(CommentDto commentDto)
         {

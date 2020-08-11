@@ -8,6 +8,6 @@ namespace AskFM.Repositories.IRepositories
 {
     public interface ICommentsRepositories
     {
-        void Add(Comment comment, string userId, string userName);
+        void Add(Comment comment);
     }
 }

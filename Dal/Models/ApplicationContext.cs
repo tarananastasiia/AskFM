@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Dal.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,15 @@ namespace AskFM.Models
         {
             Database.EnsureCreated();
         }
-
+        //public DbSet<SubscriptionsUsers> Subscriptions { get; set; }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<SubscriptionsUsers>().HasKey(u => new { u.UserId, u.SubscriptionId });
+        //    modelBuilder.Entity<SubscriptionsUsers>().
+        //        HasOne(u => u.User).WithMany(u => u.UserSubscriptions).HasForeignKey(u => u.UserId);
+        //    modelBuilder.Entity<SubscriptionsUsers>().
+        //        HasOne(u => u.Subscription).WithMany(u => u.WhoAddMe).HasForeignKey(u => u.UserId);
+        //}
         public DbSet<ImageMetaData> ImagesMetaData { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Comment> Comments { get; set; }
