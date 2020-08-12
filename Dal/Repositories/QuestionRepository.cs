@@ -32,6 +32,7 @@ namespace AskFM.Repositories
         public List<Question> UnansweredQuestionsModels(string userId)
         {
             var models = _context.Questions
+                .Include(x=>x.QuestionUser)
                 .Where(x => x.AnswerUserId == userId && x.Answer == null).ToList();
             return models;
         }
@@ -48,6 +49,7 @@ namespace AskFM.Repositories
             var models = _context.Questions
                            .Include(x => x.AnswerUser)
                            .Include(x => x.Comments)
+                           .Include(x=>x.QuestionUser)
                            .Where(x => x.AnswerUserId == userId && x.Answer != null)
                            .Skip((pageNumber - 1) * pageSize)
                            .Take(pageSize).ToList();

@@ -3,6 +3,7 @@ using AskFM.Repositories.IRepositories;
 using AskFM.Services.Contracts;
 using AskFM.ViewModels;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,19 +32,23 @@ namespace AskFM.Services
             _questionRepository.Add(question, userId, questionUserId);
         }
 
-        public UserPageDTO UnansweredQuestionsDto(QuestionDto questionDto)
+        public UserPageDTO UnansweredQuestionsDto(string userId)
         {
             var dto = new UserPageDTO();
-            dto.Questions = _questionRepository.UnansweredQuestionsModels(questionDto.QuestionUserId).
-                Select(x => new QuestionDto()
-                {
-                    QuestionUserId = x.QuestionUserId,
-                    Text = x.Text,
-                    AnswerUserId = x.AnswerUserId,
-                    Id = x.Id,
-                    IsAnonimized = x.IsAnonimized,
-                    QuestionUserName = x.IsAnonimized ? null : questionDto.QuestionUserName,
-                }).ToList();
+            var questions = _questionRepository.UnansweredQuestionsModels(userId);
+
+            dto.Questions = _mapper.Map<List<QuestionDto>>(questions);
+
+            //dto.Questions = questions.
+            //    Select(x => new QuestionDto()
+            //    {
+            //        QuestionUserId = x.QuestionUserId,
+            //        Text = x.Text,
+            //        AnswerUserId = x.AnswerUserId,
+            //        Id = x.Id,
+            //        IsAnonimized = x.IsAnonimized,
+            //        QuestionUserName = x.IsAnonimized ? null : x.QuestionUser.Email,
+            //    }).ToList();
             return dto;
         }
         public void Answer(Question question, int id)
@@ -60,12 +65,13 @@ namespace AskFM.Services
             dto.Questions = _questionRepository.PageModel(userId, pageNumber, pageSize).
                 Select(question => new QuestionDto()
                 {
+                    QuestionUserId=question.QuestionUserId,
                     Answer = question.Answer,
                     Text = question.Text,
                     AnswerUserName = question.AnswerUser?.UserName,
                     Id = question.Id,
                     IsAnonimized = question.IsAnonimized,
-                    QuestionUserName = questionName,
+                    QuestionUserName = question.IsAnonimized ? null: question.QuestionUser.Email,
                     Comments = question.Comments.Select(comment => new CommentDto()
                     {
                         QuestionId = question.Id,

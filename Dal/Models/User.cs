@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace AskFM.Models
 {
     //Pa$$w0rd
-    public class Users : IdentityUser
+    public class User : IdentityUser
     {
         public int Year { get; set; }
         public List<ImageMetaData> Images { get; set; }

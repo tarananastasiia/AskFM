@@ -37,7 +37,7 @@ namespace AskFM.Controllers
         [HttpGet("SearchUsers")]
         public IActionResult SearchUsers(string name)
         {
-            List<Users> users = new List<Users>();
+            List<User> users = new List<User>();
             if (!string.IsNullOrEmpty(name))
             {
                 users = _context.Users.Where(p => p.Email.Contains(name)).ToList();

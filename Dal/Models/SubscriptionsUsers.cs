@@ -11,9 +11,9 @@ namespace Dal.Models
     {
         [Key]
         public int UserId { get; set; }
-        public Users User { get; set; }
+        public User User { get; set; }
         [Key]
         public int SubscriptionId { get; set; }
-        public Users Subscription { get; set; }
+        public User Subscription { get; set; }
     }
 }

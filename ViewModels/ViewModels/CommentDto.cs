@@ -13,7 +13,7 @@ namespace AskFM.ViewModels
         public int QuestionId { get; set; }
         public bool IsAnonimized { get; set; }
         public string UserId { get; set; }
-        public Users UserComment { get; set; }
+        public User UserComment { get; set; }
         public QuestionDto Questions { get; set; }
         public string UserName { get; set; }
 

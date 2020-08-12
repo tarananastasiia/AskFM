@@ -9,7 +9,7 @@ namespace AskFM.Services
 {
     public interface IImageService
     {
-        void Save(Users user, FormFileDto uploadedFile);
+        void Save(User user, FormFileDto uploadedFile);
         byte[] FileStorageRead(string path);
 
         byte[] GetContent(string userId);

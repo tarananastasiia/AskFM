@@ -12,12 +12,12 @@ namespace AskFM.Models
 
         public string QuestionUserId { get; set; }
 
-        public Users QuestionUser { get; set; }
+        public User QuestionUser { get; set; }
 
         [Required]
         public string AnswerUserId { get; set; }
 
-        public Users AnswerUser { get; set; }
+        public User AnswerUser { get; set; }
         public string Text { get; set; }
         public string Answer { get; set; }
         public bool IsAnonimized { get; set; }

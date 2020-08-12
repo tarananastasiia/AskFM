@@ -21,7 +21,7 @@ namespace AskFM.Services
             _imageStorageService = imageStorageService;
         }
 
-        public void Save(Users user, FormFileDto uploadedFile)
+        public void Save(User user, FormFileDto uploadedFile)
         {
             if (uploadedFile.Length > 0)
             {
