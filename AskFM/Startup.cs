@@ -60,7 +60,7 @@ namespace AskFM
             services.AddTransient<IQuestionService, QuestionService>();
             services.AddControllersWithViews();
 
-            services.AddScoped<ICommentsRepositories, CommentsRepositories>();
+            services.AddScoped<ICommentsRepository, CommentsRepository>();
 
             services.AddTransient<ICommentsService, CommentsService>();
             services.AddControllersWithViews();

@@ -13,10 +13,10 @@ namespace AskFM.Services
     public class CommentsService: ICommentsService
     {
         private readonly ApplicationContext _context;
-        ICommentsRepositories _commentsRepositories;
+        ICommentsRepository _commentsRepositories;
         private readonly IMapper _mapper;
 
-        public CommentsService(ApplicationContext context, ICommentsRepositories commentsRepositories,
+        public CommentsService(ApplicationContext context, ICommentsRepository commentsRepositories,
             IMapper mapper)
         {
             _commentsRepositories = commentsRepositories;

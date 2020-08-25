@@ -12,7 +12,9 @@ namespace AskFM
     {
         public MappingProfile()
         {
-            CreateMap<Comment, CommentDto>().ReverseMap();
+            CreateMap<Comment, CommentDto>().ForMember(x => x.UserId, opt => opt.MapFrom(x => x.IsAnonimized ? null : x.UserId)).
+                ForMember(x => x.UserName, opt => opt.MapFrom(x => x.IsAnonimized ? null : x.UserComment.Email));
+            CreateMap<CommentDto, Comment>();
 
             CreateMap<Question, QuestionDto>().ForMember(x => x.QuestionUserName, opt => opt.MapFrom(x => x.IsAnonimized ? null : x.QuestionUser.Email));
             CreateMap<QuestionDto, Question>();

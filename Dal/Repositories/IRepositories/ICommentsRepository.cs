@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AskFM.Repositories.IRepositories
 {
-    public interface ICommentsRepositories
+    public interface ICommentsRepository
     {
         void Add(Comment comment);
     }

@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using AskFM.Models;
+using AskFM.ViewModels;
+using Dal.Models;
+using Dal.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AskFM.Controllers
@@ -11,20 +15,18 @@ namespace AskFM.Controllers
     [Route("subscriptions")]
     public class SubscriptionsController : Controller
     {
-        private readonly ApplicationContext _context;
-        public SubscriptionsController(ApplicationContext context)
+        ISubscriptionsRepository _subscriptionsRepository;
+        public SubscriptionsController(ISubscriptionsRepository subscriptionsRepository)
         {
-            _context = context;
+            _subscriptionsRepository = subscriptionsRepository;
         }
-        [HttpGet]
+        [HttpGet("{userId}")]
         public IActionResult Add(string userId)
         {
-            if (userId == null)
-            {
-                userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            }
-
-            return View();
+            var whoSignedUpId= User.FindFirstValue(ClaimTypes.NameIdentifier);
+            _subscriptionsRepository.Add(userId,whoSignedUpId);
+            return LocalRedirect($"~/question/page?userId={userId}");
         }
+
     }
 }

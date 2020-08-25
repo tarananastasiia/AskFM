@@ -2,34 +2,24 @@
 @{
     ViewData["Title"] = "Page";
 }
-
-<div class="text">@Model.User.Name</div>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Кнопка</title>
-</head>
-<body>
-    <form action="subscriptions" target="_blank">
-        <button>Добавить в друзья</button>
-    </form>
-</body>
-</html>
-
-<div class="row">
-    <div class="col-lg-6">
-        <div class="input-group">
-            <span class="input-group-btn">
-                <a href="~/users/SearchUsers" class="btn">Найти</a>
-
-            </span>
-        </div>
-    </div>
-</div>
-
 @if (Model.User.Id != null)
 {
+    <div class="text">@Model.User.Name</div>
+
+    <a asp-controller="subscriptions"
+       asp-action="@Model.User.Id">Добавить в друзья</a>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <a href="~/users/SearchUsers" class="btn">Найти</a>
+
+                </span>
+            </div>
+        </div>
+    </div>
+
     <img src="~/users/image?userId=@Model.User.Id" style="width:150px;height:200px;" />
     <html>
     <head>

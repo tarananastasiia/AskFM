@@ -14,11 +14,12 @@ namespace AskFM.Models
     {
         public int Year { get; set; }
         public List<ImageMetaData> Images { get; set; }
-        //public List<SubscriptionsUsers> UserSubscriptions { get; set; }
-        //public List<SubscriptionsUsers> WhoAddMe { get; set; }
-        //public Users()
-        //{
-        //    UserSubscriptions = new List<SubscriptionsUsers>();
-        //}
+        public List<SubscriptionsUsers> SubscriptionsUser { get; set; }
+        public List<SubscriptionsUsers> UserSubscriptions { get; set; }
+        public User()
+        {
+            SubscriptionsUser = new List<SubscriptionsUsers>();
+            UserSubscriptions = new List<SubscriptionsUsers>();
+        }
     }
 }

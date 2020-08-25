@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace AskFM.Repositories
 {
-    public class CommentsRepositories : ICommentsRepositories
+    public class CommentsRepository : ICommentsRepository
     {
         private readonly ApplicationContext _context;
 
-        public CommentsRepositories(ApplicationContext context)
+        public CommentsRepository(ApplicationContext context)
         {
             _context = context;
         }

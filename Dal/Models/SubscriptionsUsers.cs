@@ -9,11 +9,9 @@ namespace Dal.Models
 {
     public class SubscriptionsUsers
     {
-        [Key]
-        public int UserId { get; set; }
+        public string WhoSignedUpId { get; set; }
         public User User { get; set; }
-        [Key]
-        public int SubscriptionId { get; set; }
-        public User Subscription { get; set; }
+        public User Followers { get; set; }
+        public string FollowerId { get; set; }
     }
 }

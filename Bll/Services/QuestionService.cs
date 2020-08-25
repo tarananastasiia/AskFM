@@ -62,25 +62,30 @@ namespace AskFM.Services
             dto.PageSize = pageSize;
             dto.User.Id = userId;
             dto.PageNumber = pageNumber;
-            dto.Questions = _questionRepository.PageModel(userId, pageNumber, pageSize).
-                Select(question => new QuestionDto()
-                {
-                    QuestionUserId=question.QuestionUserId,
-                    Answer = question.Answer,
-                    Text = question.Text,
-                    AnswerUserName = question.AnswerUser?.UserName,
-                    Id = question.Id,
-                    IsAnonimized = question.IsAnonimized,
-                    QuestionUserName = question.IsAnonimized ? null: question.QuestionUser.Email,
-                    Comments = question.Comments.Select(comment => new CommentDto()
-                    {
-                        QuestionId = question.Id,
-                        Text = comment.Text,
-                        IsAnonimized = comment.IsAnonimized,
-                        UserId = comment.IsAnonimized ? null : comment.UserId,
-                        UserName = comment.IsAnonimized ? null : comment.UserName,
-                    }).ToList()
-                }).ToList();
+            var questionmodel = _questionRepository.PageModel(userId, pageNumber, pageSize);
+
+            dto.Questions = _mapper.Map<List<QuestionDto>>(questionmodel);
+
+
+            //dto.Questions =questionmodel.
+            //    Select(question => new QuestionDto()
+            //    {
+            //        QuestionUserId=question.QuestionUserId,
+            //        Answer = question.Answer,
+            //        Text = question.Text,
+            //        AnswerUserName = question.AnswerUser?.UserName,
+            //        Id = question.Id,
+            //        IsAnonimized = question.IsAnonimized,
+            //        QuestionUserName = question.IsAnonimized ? null: question.QuestionUser.Email,
+            //        Comments = question.Comments.Select(comment => new CommentDto()
+            //        {
+            //            QuestionId = question.Id,
+            //            Text = comment.Text,
+            //            IsAnonimized = comment.IsAnonimized,
+            //            UserId = comment.IsAnonimized ? null : comment.UserId,
+            //            UserName = comment.IsAnonimized ? null : comment.UserName,
+            //        }).ToList()
+            //    }).ToList();
             return dto;
         }
     }
