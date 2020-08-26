@@ -1,5 +1,4 @@
-﻿using Dal.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,12 +24,12 @@ namespace AskFM.Models
 
             modelBuilder.Entity<SubscriptionsUsers>()
                 .HasOne(sc => sc.User)
-                .WithMany(s => s.SubscriptionsUser)
+                .WithMany(s => s.Subscriptions)
                 .HasForeignKey(sc => sc.WhoSignedUpId).OnDelete(DeleteBehavior.Restrict); ;
 
             modelBuilder.Entity<SubscriptionsUsers>()
                 .HasOne(sc => sc.Followers)
-                .WithMany(c => c.UserSubscriptions)
+                .WithMany(c => c.Followers)
                 .HasForeignKey(sc => sc.FollowerId);
         }
         public DbSet<SubscriptionsUsers> Subscriptions { get; set; }

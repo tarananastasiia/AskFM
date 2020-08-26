@@ -65,6 +65,8 @@ namespace AskFM
             services.AddTransient<ICommentsService, CommentsService>();
             services.AddControllersWithViews();
 
+            services.AddScoped<ISubscriptionsRepository, SubscriptionsRepository>();
+
             services.AddSwaggerGen();
         }
 

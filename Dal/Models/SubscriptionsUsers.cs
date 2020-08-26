@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Dal.Models
+namespace AskFM.Models
 {
     public class SubscriptionsUsers
     {

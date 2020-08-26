@@ -1,0 +1,11 @@
+﻿@model AskFM.Models.User
+@{
+    ViewData["Title"] = "AllSubscription";
+}
+
+@foreach (var c in Model.Followers)
+{
+    <a href="~/question/page?userId=@c.Followers.Id" class="btn">@c.Followers.UserName</a>
+    <br>
+}
+

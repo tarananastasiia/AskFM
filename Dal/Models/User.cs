@@ -1,5 +1,4 @@
-﻿using Dal.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,12 +13,12 @@ namespace AskFM.Models
     {
         public int Year { get; set; }
         public List<ImageMetaData> Images { get; set; }
-        public List<SubscriptionsUsers> SubscriptionsUser { get; set; }
-        public List<SubscriptionsUsers> UserSubscriptions { get; set; }
+        public List<SubscriptionsUsers> Subscriptions { get; set; }
+        public List<SubscriptionsUsers> Followers { get; set; }
         public User()
         {
-            SubscriptionsUser = new List<SubscriptionsUsers>();
-            UserSubscriptions = new List<SubscriptionsUsers>();
+            Subscriptions = new List<SubscriptionsUsers>();
+            Followers = new List<SubscriptionsUsers>();
         }
     }
 }

@@ -20,6 +20,10 @@
         </div>
     </div>
 
+    <a asp-controller="subscriptions"
+       asp-action="all"
+       asp-route-userId="@Model.User.Id">Мои подписки</a>
+
     <img src="~/users/image?userId=@Model.User.Id" style="width:150px;height:200px;" />
     <html>
     <head>

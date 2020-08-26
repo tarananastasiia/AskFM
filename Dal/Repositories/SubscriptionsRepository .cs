@@ -1,11 +1,12 @@
 ﻿using AskFM.Models;
-using Dal.Models;
-using Dal.Repositories.IRepositories;
+using AskFM.Repositories.IRepositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Dal.Repositories
+namespace AskFM.Repositories
 {
     public class SubscriptionsRepository : ISubscriptionsRepository
     {
@@ -19,8 +20,23 @@ namespace Dal.Repositories
         {
             var user = _context.Users.Find(whoSignedUpId);
 
-            user.SubscriptionsUser.Add(new SubscriptionsUsers { WhoSignedUpId = user.Id, FollowerId = userId });
+            user.Subscriptions.Add(new SubscriptionsUsers { WhoSignedUpId = user.Id, FollowerId = userId });
             _context.SaveChanges();
+        }
+
+        public List<SubscriptionsUsers> MyFollowers(string userId)
+        {
+            var followers = _context.Subscriptions
+               .Include(x => x.Followers)
+               .Include(x=>x.User)
+               .Where(x => x.WhoSignedUpId == userId).ToList();
+
+            return followers;
+        }
+
+        public List<SubscriptionsUsers> DeleteFollowers(string userId)
+        {
+
         }
     }
 }
