@@ -6,6 +6,7 @@
 @foreach (var c in Model.Followers)
 {
     <a href="~/question/page?userId=@c.Followers.Id" class="btn">@c.Followers.UserName</a>
+    <a href="~/subscriptions/delete?userId=@c.Followers.Id" class="btn">Отменить подписку</a>
     <br>
 }
 

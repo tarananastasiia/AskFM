@@ -9,6 +9,6 @@ namespace AskFM.Repositories.IRepositories
     {
         void Add(string userId, string whoSignedUpId);
         List<SubscriptionsUsers> MyFollowers(string userId);
-        List<SubscriptionsUsers> DeleteFollowers(string userId);
+        void DeleteFollowers(string userId);
     }
 }

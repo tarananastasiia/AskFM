@@ -34,9 +34,11 @@ namespace AskFM.Repositories
             return followers;
         }
 
-        public List<SubscriptionsUsers> DeleteFollowers(string userId)
+        public void DeleteFollowers(string userId)
         {
-
+            var follower = _context.Subscriptions.FirstOrDefault(sc => sc.FollowerId == userId);
+            _context.Subscriptions.Remove(follower);
+            _context.SaveChanges();
         }
     }
 }
