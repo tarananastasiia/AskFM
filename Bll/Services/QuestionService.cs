@@ -61,6 +61,7 @@ namespace AskFM.Services
             dto.QuestionsCount = _questionRepository.QuestionCount(userId);
             dto.PageSize = pageSize;
             dto.User.Id = userId;
+            dto.User.Name = _questionRepository.UserName(userId);
             dto.PageNumber = pageNumber;
             var questionmodel = _questionRepository.PageModel(userId, pageNumber, pageSize);
 

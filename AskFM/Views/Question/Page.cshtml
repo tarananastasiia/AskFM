@@ -2,29 +2,48 @@
 @{
     ViewData["Title"] = "Page";
 }
+<style>
+    .round {
+        border-radius: 100px; /* Радиус скругления */
+        border: 3px solid green; /* Параметры рамки */
+        box-shadow: 0 0 7px #666; /* Параметры тени */
+    }
+</style>
 @if (Model.User.Id != null)
 {
-    <div class="text">@Model.User.Name</div>
+    if (User.Identity.Name != Model.User.Name)
+    {
+        <p class="text" align="right" style="font:italic 25px bold " Times New Roman", Times, serif">@Model.User.Name</p>
+        <img src="~/users/image?userId=@Model.User.Id" alt="" class="round" style="width:150px;height:200px;" />
+        <br>
+        <a asp-controller="subscriptions"
+           asp-action="all"
+           asp-route-userId="@Model.User.Id">Подписки</a>
+        <br>
+        <a asp-controller="subscriptions"
+           asp-action="@Model.User.Id">Добавить в друзья</a>
+    }
 
-    <a asp-controller="subscriptions"
-       asp-action="@Model.User.Id">Добавить в друзья</a>
+    else
+    {
+        <img src="~/users/image?userId=@Model.User.Id" alt="" class="round" style="width:150px;height:200px;" />
+        <br>
+        <a asp-controller="subscriptions"
+           asp-action="all"
+           asp-route-userId="@Model.User.Id">Мои подписки</a>
+    }
 
     <div class="row">
         <div class="col-lg-6">
             <div class="input-group">
                 <span class="input-group-btn">
                     <a href="~/users/SearchUsers" class="btn">Найти</a>
-
                 </span>
             </div>
         </div>
     </div>
 
-    <a asp-controller="subscriptions"
-       asp-action="all"
-       asp-route-userId="@Model.User.Id">Мои подписки</a>
 
-    <img src="~/users/image?userId=@Model.User.Id" style="width:150px;height:200px;" />
     <html>
     <head>
         <meta charset="utf-8">

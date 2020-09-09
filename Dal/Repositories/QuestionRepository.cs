@@ -37,6 +37,12 @@ namespace AskFM.Repositories
             return models;
         }
 
+        public string UserName(string userId)
+        {
+            var name=_context.Users.Find(userId).Email;
+            return name;
+        }
+
         public void Answer(Question question, int id)
         {
             var questions = _context.Questions.First(x => x.Id == id);

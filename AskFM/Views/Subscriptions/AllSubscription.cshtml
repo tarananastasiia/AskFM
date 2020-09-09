@@ -2,10 +2,18 @@
 @{
     ViewData["Title"] = "AllSubscription";
 }
-
+<style>
+    .round {
+        border-radius: 100px; /* Радиус скругления */
+        border: 3px solid green; /* Параметры рамки */
+        box-shadow: 0 0 7px #666; /* Параметры тени */
+    }
+</style>
 @foreach (var c in Model.Followers)
 {
-    <a href="~/question/page?userId=@c.Followers.Id" class="btn">@c.Followers.UserName</a>
+    <img src="~/users/image?userId=@c.Followers.Id" alt="" class="round" style="width:75px;height:100px;" />
+    <a href="~/question/page?userId=@c.Followers.Id" class="btn" align="left" style="font:italic 20px bold " 
+       Times New Roman", Times, serif">@c.Followers.UserName</a>
     <a href="~/subscriptions/delete?userId=@c.Followers.Id" class="btn">Отменить подписку</a>
     <br>
 }

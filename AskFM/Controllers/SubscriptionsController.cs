@@ -37,7 +37,7 @@ namespace AskFM.Controllers
             return View("AllSubscription",a);
         }
 
-        [HttpDelete("delete")]
+        [HttpGet("delete")]
         public IActionResult DeleteFollowers(string userId)
         {
             var whoSignedUpId = User.FindFirstValue(ClaimTypes.NameIdentifier);

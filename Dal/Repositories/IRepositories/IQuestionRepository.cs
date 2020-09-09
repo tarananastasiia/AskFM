@@ -10,6 +10,7 @@ namespace AskFM.Repositories.IRepositories
     {
         void Add(Question question, string userId, string questionUserId);
         int QuestionCount(string userId);
+        string UserName(string userId);
         void Answer(Question question, int id);
         List<Question> UnansweredQuestionsModels(string userId);
         List<Question> PageModel(string userId, int pageNumber = 1, int pageSize = 3);
