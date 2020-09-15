@@ -1,4 +1,5 @@
 ﻿using AskFM.Models;
+using Dal.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,8 @@ namespace AskFM.ViewModels
         public string Answer { get; set; }
         public bool IsAnonimized { get; set; }
         public List<CommentDto> Comments { get; set; }
+        public List<SubscriptionsUsers> Subscriptions { get; set; }
+        public List<SubscriptionsUsers> Followers { get; set; }
+        public List<Like> Likes { get; set; }
     }
 }

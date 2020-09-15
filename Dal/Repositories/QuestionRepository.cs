@@ -1,5 +1,6 @@
 ﻿using AskFM.Models;
 using AskFM.Repositories.IRepositories;
+using Dal.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -28,18 +29,23 @@ namespace AskFM.Repositories
             int count = _context.Questions.Count(x => x.AnswerUserId == userId && x.Answer != null);
             return count;
         }
+        public List<SubscriptionsUsers> Followers(string userId)
+        {
+            var a = _context.Subscriptions.Where(x => x.FollowerId == userId).ToList();
+            return a;
+        }
 
         public List<Question> UnansweredQuestionsModels(string userId)
         {
             var models = _context.Questions
-                .Include(x=>x.QuestionUser)
+                .Include(x => x.QuestionUser)
                 .Where(x => x.AnswerUserId == userId && x.Answer == null).ToList();
             return models;
         }
 
         public string UserName(string userId)
         {
-            var name=_context.Users.Find(userId).Email;
+            var name = _context.Users.Find(userId).Email;
             return name;
         }
 
@@ -55,7 +61,8 @@ namespace AskFM.Repositories
             var models = _context.Questions
                            .Include(x => x.AnswerUser)
                            .Include(x => x.Comments)
-                           .Include(x=>x.QuestionUser)
+                           .Include(x => x.QuestionUser)
+                           .Include(x=>x.Likes)
                            .Where(x => x.AnswerUserId == userId && x.Answer != null)
                            .Skip((pageNumber - 1) * pageSize)
                            .Take(pageSize).ToList();

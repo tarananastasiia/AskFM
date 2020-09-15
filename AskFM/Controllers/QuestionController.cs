@@ -9,6 +9,7 @@ using AskFM.Models;
 using AskFM.Repositories.IRepositories;
 using AskFM.Services.Contracts;
 using AskFM.ViewModels;
+using Dal.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
@@ -23,7 +24,7 @@ namespace AskFM.Controllers
     {
         IQuestionService _questionService;
 
-        public QuestionController( IQuestionService questionService)
+        public QuestionController(IQuestionService questionService)
         {
             _questionService = questionService;
         }
@@ -48,7 +49,7 @@ namespace AskFM.Controllers
         [HttpGet("un-answeredquestions")]
         public IActionResult UnansweredQuestions()
         {
-            string userId= User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return View("Answer", _questionService.UnansweredQuestionsDto(userId));
         }
 
@@ -67,8 +68,7 @@ namespace AskFM.Controllers
                 userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             }
             string questionName = User.FindFirstValue(ClaimTypes.Name);
-            return View("Page", _questionService.PageDTO(userId,questionName,pageNumber,pageSize));
+            return View("Page", _questionService.PageDTO(userId, questionName, pageNumber, pageSize));
         }
-
     }
 }

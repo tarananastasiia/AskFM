@@ -20,12 +20,20 @@
            asp-action="all"
            asp-route-userId="@Model.User.Id">Подписки</a>
         <br>
+        foreach (var follower in Model.Followers)
+        {
+            if (Model.User.Id == follower.FollowerId)
+            {
+                <a href="~/subscriptions/delete?userId=@Model.User.Id" class="btn">Отменить подписку</a>
+            }
+            break;
+        }
         <a asp-controller="subscriptions"
            asp-action="@Model.User.Id">Добавить в друзья</a>
     }
-
     else
     {
+
         <img src="~/users/image?userId=@Model.User.Id" alt="" class="round" style="width:150px;height:200px;" />
         <br>
         <a asp-controller="subscriptions"
@@ -100,10 +108,15 @@
 {
     <div class="row">
         <div class="col-md-4">
-
             <div class="panel-heading">@question.Text</div>
-            <div class="panel-heading">@question.QuestionUserName</div>
+            <p class="text" align="left" style="font:italic 15px bold " Times New Roman", Times, serif">@question.QuestionUserName</p>
             <div class="panel-heading">@question.Answer</div>
+
+            <form asp-controller="likes" asp-action="" asp-route-questionId="@question.Id"
+                  asp-route-whoWasLikedId="@Model.User.Id" method="post">
+                <input type="submit" value="Мне нравится @question.Likes.Count" />
+            </form>
+
             <h4>Коментарии</h4>
             @foreach (var comment in question.Comments ?? new List<AskFM.ViewModels.CommentDto>())
             {
@@ -120,7 +133,7 @@
                     <span class="text-danger"></span>
                 </div>
                 <div>
-                    <label asp-for=@question.Comments.FirstOrDefault().IsAnonimized></label><br />
+                    <label asp-for=@question.Comments.FirstOrDefault().IsAnonimized></label>
                     <input asp-for=@question.Comments.FirstOrDefault().IsAnonimized />
                 </div>
                 <input name="QuestionId" type="hidden" value=@question.Id>

@@ -2,6 +2,15 @@
 @{
     ViewBag.Title = "Каталог пользователей";
 }
+
+<style>
+    .round {
+        border-radius: 100px; /* Радиус скругления */
+        border: 3px solid green; /* Параметры рамки */
+        box-shadow: 0 0 7px #666; /* Параметры тени */
+    }
+</style>
+
 <h2>Пользователи</h2>
 
 <form method="get">
@@ -12,7 +21,8 @@
     </div>
 </form>
 
-@foreach (var item in Model.Users)
+@foreach (var c in Model.Users)
 {
-    <a href="~/question/page?userId=@item.Id" class="btn">@item.Email</a>
+    <img src="~/users/image?userId=@c.Id" alt="" class="round" style="width:75px;height:100px;" />
+    <a href="~/question/page?userId=@c.Id" class="btn">@c.Email</a>
 }
