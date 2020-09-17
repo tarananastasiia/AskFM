@@ -112,10 +112,31 @@
             <p class="text" align="left" style="font:italic 15px bold " Times New Roman", Times, serif">@question.QuestionUserName</p>
             <div class="panel-heading">@question.Answer</div>
 
+            @foreach (var like in question.Likes)
+            {
+                if (Model.User.Id == like.UserId && question.Id == like.QuestionId)
+                {
+                    <form asp-controller="likes" asp-action="" asp-route-questionId="@question.Id"
+                          asp-route-whoWasLikedId="@Model.User.Id" method="delete">
+                        <input type="submit" value="Мне нравится @question.Likes.Count" />
+                    </form>
+                }
+                else
+                {
+                    <form asp-controller="likes" asp-action="" asp-route-questionId="@question.Id"
+                          asp-route-whoWasLikedId="@Model.User.Id" method="post">
+                        <input type="submit" value="Мне нравится @question.Likes.Count" />
+                    </form>
+
+                }
+            }
+            @if (question.Likes == null)
+            {
             <form asp-controller="likes" asp-action="" asp-route-questionId="@question.Id"
                   asp-route-whoWasLikedId="@Model.User.Id" method="post">
                 <input type="submit" value="Мне нравится @question.Likes.Count" />
             </form>
+            }
 
             <h4>Коментарии</h4>
             @foreach (var comment in question.Comments ?? new List<AskFM.ViewModels.CommentDto>())
